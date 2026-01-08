@@ -1,11 +1,14 @@
 import type { GuitarType } from "../interface/types"
 
 type GuitarProps = {
-  guitar: GuitarType
+  guitar: GuitarType,
+  addToCart: (guitar:GuitarType) =>void
+  
+  
 }
 
 
-export const Guitar = ({ guitar }:GuitarProps) => {
+export const Guitar = ({ guitar,addToCart}:GuitarProps) => {
   const { name, price, image, description } = guitar
   return (
    <>
@@ -20,6 +23,7 @@ export const Guitar = ({ guitar }:GuitarProps) => {
                     <button 
                         type="button"
                         className="btn btn-dark w-100"
+                        onClick={()=>addToCart(guitar)}
                     >Agregar al Carrito</button>
                 </div>
             </div>

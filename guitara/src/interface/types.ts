@@ -4,4 +4,5 @@ export interface GuitarType {
   image: string
   description: string
   price: number
+
 }
