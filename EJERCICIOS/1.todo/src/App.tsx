@@ -9,10 +9,16 @@ import type { Todo } from "./types/todo"
 function App() {
 
 
-const [todos, setTodos] = useState<Todo>()
+const [todos, setTodos] = useState<Todo[]>([])
 
 const addTodo = ( title: string) =>{
-  
+  if(title.trim() == "") return;
+  const newTodo: Todo ={
+    id:crypto.randomUUID(),
+    title: title.trim(),
+    completed:false
+  };
+  setTodos([...todos, newTodo])
   
 }
 
@@ -21,7 +27,7 @@ const addTodo = ( title: string) =>{
     <div className="todo-app">
       <TodoHeader />
       <TodoForm addTodo = {addTodo} />
-      <TodoList />
+      <TodoList todos ={todos} />
     </div>
   )
 }
