@@ -5,3 +5,8 @@ export type MenuItem={
     category:string,
     isFavorite:boolean
 }
+
+export type cartItem = MenuItem & {
+    quantity:number
+
+}
