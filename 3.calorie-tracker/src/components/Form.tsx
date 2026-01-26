@@ -1,13 +1,13 @@
 import React, { useState } from "react"
 import { categories } from "../data/categories"
-import { Activity } from "../types"
+import type { Activity } from "../types"
 
 
 export const Form = () => {
 
   const [activity, setActivity] = useState<Activity>({
     category: 1,
-    name:' ',
+    name:"",
     calories:0
   })
 
