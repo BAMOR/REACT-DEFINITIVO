@@ -1,15 +1,22 @@
-import React, { useState } from "react"
+import React, { useState, type Dispatch } from "react"
 import { categories } from "../data/categories"
+import {v4 as uuidv4} from 'uuid'
 import type { Activity } from "../types"
+import type { ActiviryActions } from "../reducers/activity-reducer"
 
+type FormProps={
+  dispatch: Dispatch<ActiviryActions>
+}
+export const Form = ({dispatch}:FormProps) => {
 
-export const Form = () => {
-
-  const [activity, setActivity] = useState<Activity>({
+  const initialState : Activity = {
+    id:uuidv4(),
     category: 1,
     name:"",
     calories:0
-  })
+  }
+
+  const [activity, setActivity] = useState<Activity>(initialState)
 
   const handleChange = (e:React.ChangeEvent<HTMLSelectElement> |React.ChangeEvent<HTMLInputElement> )=> {
 
@@ -28,7 +35,13 @@ export const Form = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 
       e.preventDefault()
-      console.log("submit....")
+
+      dispatch({type:"save-activity", payload:{newActivity:activity}})
+
+      setActivity({
+        ...initialState,
+        id:uuidv4()
+      })
 
     }
 
