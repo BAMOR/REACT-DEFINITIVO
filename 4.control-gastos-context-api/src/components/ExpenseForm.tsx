@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import type { DraftExpense, Value } from "../types";
 import { categories } from "../data/categories"
 import DatePicker from 'react-date-picker';
@@ -22,7 +22,15 @@ export const ExpenseForm = () => {
     })
 
     const [error,setError] = useState('')
-    const {dispatch}= useBudget()
+    const {dispatch, state}= useBudget()
+
+    useEffect(()=>{
+        if(state.editingId){
+            const editingExpense = state.expenses.filter(currentExpense => currentExpense.id === state.editingId)[0]
+            setExpense(editingExpense)
+        }
+
+    },[state.editingId])
 
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
 
@@ -56,7 +64,14 @@ export const ExpenseForm = () => {
             return
         }
         //agregar un nuevo gasto
-        dispatch({type: 'add-expense', payload: {expense}})
+        if(state.editingId) {
+            dispatch({type: 'upadte-expense', payload:{expense:{id:state.editingId, ...expense}}})
+
+        }else{
+            dispatch({type: 'add-expense', payload: {expense}})
+            
+        }
+        
 
         //reiniciar el state
         setExpense({
@@ -77,7 +92,7 @@ export const ExpenseForm = () => {
             <legend
                 className="uppercase  text-center text-2xl font-black border-b-4 py-2 border-blue-500"
             >
-                Nuevo Gasto</legend>
+                {state.editingId ? 'Guardar Cambios' : 'Nuevo Gasto'}</legend>
 
                 {error && <ErrorMesaage>{error}</ErrorMesaage>}
 
@@ -153,7 +168,8 @@ export const ExpenseForm = () => {
             <input
                 type="submit"
                 className="bg-blue-600 cursor-pointer w-full p-2 text-white uppercase font-bold rounded-lg"
-                value={'Registrar Gasto'}
+                
+                value = {state.editingId ? 'Guardar Cambios' : 'Registrar Gasto'}
             />
 
 
